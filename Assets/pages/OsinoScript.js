@@ -91,26 +91,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const contents = document.querySelectorAll(".tab-content");
 
     buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
 
-            // desativa abas
-            buttons.forEach(b => b.classList.remove("active"));
-            contents.forEach(c => c.classList.remove("active"));
+    // 🔒 se a aba estiver trancada
+    if (btn.classList.contains("Lock")) {
+      e.preventDefault();
+      pedirSenhaAba();
+      return;
+    }
 
-            // ativa o botão clicado
-            btn.classList.add("active");
+    // comportamento normal
+    buttons.forEach(b => b.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
 
-            // pega o ID correto
-            const id = btn.dataset.tab;
-            const conteudo = document.getElementById(id);
+    btn.classList.add("active");
 
-            if (conteudo) {
-                conteudo.classList.add("active");
-            } else {
-                console.warn("Conteúdo não encontrado:", id);
-            }
-        });
-    });
+    const id = btn.dataset.tab;
+    const conteudo = document.getElementById(id);
+
+    if (conteudo) {
+      conteudo.classList.add("active");
+    }
+  });
+});
 });
 
 function ajustarTamanhoNome() {
@@ -125,6 +128,41 @@ function ajustarTamanhoNome() {
   while (nome.scrollWidth > parentWidth && parseInt(nome.style.fontSize) > minFont) {
     nome.style.fontSize = (parseInt(nome.style.fontSize) - 1) + 'px';
   }
+}
+
+const senhaAbaTrancada = "Luka";
+
+function pedirSenhaAba(e) {
+  if (e) e.stopPropagation(); // impede troca de aba
+  document.getElementById("senhaPopup").style.display = "flex";
+}
+
+function fecharPopup() {
+  document.getElementById("senhaPopup").style.display = "none";
+}
+
+function confirmarSenha() {
+  const senhaDigitada = document.getElementById("senhaInput").value;
+
+  if (senhaDigitada === senhaAbaTrancada) {
+    window.open("https://watcher-iv.github.io/Spell_Menu/", "_blank");
+    fecharPopup();
+  } else {
+    document.getElementById("erro").style.display = "block";
+  }
+
+}
+
+function liberarAbaTrancada() {
+  const aba = document.querySelector('.tab[data-tab="tab-trancada"]');
+
+  aba.classList.remove("Lock");
+
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+  aba.classList.add("active");
+  document.getElementById("tab-trancada").classList.add("active");
 }
 
 // Roda quando a página carrega e sempre que o texto muda
@@ -415,6 +453,7 @@ grupos.forEach(group => {
 
     limitarGrupo(group);
 });
+
 
 // Agora que selects já têm opções, podemos carregar os valores
 carregarFicha();

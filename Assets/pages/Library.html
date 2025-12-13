@@ -14,12 +14,26 @@
         color: #eee;
         display: flex;
         justify-content: center;
+        overflow-x: hidden;
+        height: 100vh;
     }
 
     .container {
-        width: 90%;
-        max-width: 1000px;
-        margin-top: 60px;
+        width: 100%;
+        display: flex;
+    }
+
+    /* Fichas à esquerda */
+    .fichas-container {
+        width: 25%;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     h1 {
@@ -32,7 +46,7 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: 1fr;
         gap: 25px;
     }
 
@@ -52,6 +66,41 @@
         border-color: #444;
         transform: translateY(-4px);
         background: #151515;
+    }
+
+    /* Parallax à direita */
+    .ficha-detalhes {
+        width: 75%;
+        padding: 40px;
+        transition: 0.5s;
+        background-color: #111;
+        position: relative;
+    }
+
+    .ficha-detalhes img {
+        max-width: 100%;
+        height: auto;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    /* Efeito de fumaça */
+    .fumaça {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: url('fumaça.png') repeat-x;
+        animation: fumaça 10s linear infinite;
+    }
+
+    @keyframes fumaça {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
     }
 
     /* POPUP */
@@ -102,32 +151,139 @@
         background: #333;
     }
 
+    .ficha-detalhes {
+    position: relative;
+    overflow: hidden;
+    background: black;
+}
+
+/* camadas */
+.layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* BACKGROUND */
+.background {
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.1);
+    transition: background-image 0.6s ease, transform 0.4s ease;
+}
+
+/* PERSONAGEM */
+.personagem {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 90%;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+}
+
+/* quando tiver ficha selecionada */
+.personagem.ativo {
+    opacity: 1;
+}
+
+/* OVERLAY / CHARME */
+.overlay {
+    mix-blend-mode: screen;
+    opacity: 0.35;
+    background-size: cover;
+    background-position: center;
+}
+
+/* ===== FUMAÇA MELHORADA ===== */
+
+.smoke {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 140px;
+    width: 200%;
+    background: url("smoke.png") repeat-x;
+    animation: smokeMove 40s linear infinite;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+@keyframes smokeMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ===== ANIMAÇÃO DE ENTRADA ===== */
+
+/* estado inicial (fora da tela) */
+.personagem {
+    bottom: 0;
+    left: 50%;
+    max-height: 90%;
+    opacity: 0;
+
+    /* variáveis */
+    --x: 40%;
+    --y: 0px;
+
+    transform: translate(var(--x), var(--y));
+    transition:
+        transform 0.45s cubic-bezier(.2,.8,.2,1),
+        opacity 0.25s ease;
+}
+
+.personagem.ativo {
+    opacity: 1;
+    --x: var(--offset-final, -50%);
+}
+
+/* OVERLAY */
+.overlay {
+    opacity: 0;
+    --x: 20%;
+    transform: translateX(var(--x));
+    transition:
+        transform 0.6s cubic-bezier(.2,.8,.2,1),
+        opacity 0.4s ease;
+}
+
+.overlay.ativo {
+    opacity: 0.35;
+    --x: 0%;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+    <div class="fichas-container">
+        <h1>Biblioteca de Fichas</h1>
 
-    <h1>Biblioteca de Fichas</h1>
+        <div class="grid">
+            <div class="card" onclick="pedirSenha('ficha1')">
+                <h2>Ficha: O Sino</h2>
+                <small>?????</small>
+            </div>
 
-    <div class="grid">
+            <div class="card" onclick="pedirSenha('ficha2')">
+                <h2>Ficha: O Miro</h2>
+                <small>?????</small>
+            </div>
 
-        <div class="card" onclick="pedirSenha('ficha1')">
-            <h2>Ficha: O sino</h2>
-            <small>?????</small>
+            <div class="card" onclick="pedirSenha('ficha3')">
+                <h2>Ficha: O Sino3</h2>
+                <small>?????</small>
+            </div>
         </div>
+    </div>
 
-        <div class="card" onclick="pedirSenha('ficha2')">
-            <h2>Ficha: O miro</h2>
-            <small>?????</small>
-        </div>
-
-        <div class="card" onclick="pedirSenha('ficha3')">
-            <h2>Ficha: O sino3</h2>
-            <small>?????</small>
-        </div>
-
+<div class="ficha-detalhes" id="fichaDetalhes">
+    <div class="layer background" id="backgroundFicha"></div>
+    <img class="layer personagem" id="imagemFicha" alt="Imagem do Personagem">
+    <div class="layer overlay" id="detalhesExtras"></div>
+</div>
     </div>
 </div>
 
@@ -143,6 +299,8 @@
         <p id="erro" style="color: red; font-size: 0.9rem; display:none;">Senha incorreta.</p>
     </div>
 </div>
+
+<div class="smoke"></div>
 
 <script src="senhas.js"></script>
 

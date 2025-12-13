@@ -136,7 +136,9 @@
     <div class="tabs">
       <button class="tab active" data-tab="tab-geral">Geral</button>
       <button class="tab" data-tab="tab-habilidades">Habilidades</button>
-      <button class="tab Lock" data-tab="tab-Trancada"><span class="lock">??</span></button>
+      <button class="tab Lock" data-tab="tab-trancada" onclick="pedirSenhaAba(event)">
+        <span class="lock">??</span>
+      </button>
     </div>
 
     <!-- CONTEÚDO DA ABA GERAL -->
@@ -209,8 +211,30 @@
     <strong class="subtext">Escreva as habilidades</strong>
     <div class="free-write" id="habText" contenteditable="true"></div>
   </div>
+
+
+  <div class="tab-content" id="tab-trancada">
+  <!-- CONTEÚDO SECRETO -->
+  </div>
   </div>
   </aside>
+
+  <div id="senhaPopup">
+  <div class="popup-box">
+    <h2>Digite a senha</h2>
+
+    <input type="password" id="senhaInput">
+
+    <div style="margin-top:12px;">
+      <button onclick="confirmarSenha()">Entrar</button>
+      <button onclick="fecharPopup()">Cancelar</button>
+    </div>
+
+    <p id="erro" style="display:none; color:red; margin-top:8px;">
+      Senha incorreta
+    </p>
+  </div>
+</div>
   </div>
   </div>
  
