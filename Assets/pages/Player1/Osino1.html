@@ -109,13 +109,16 @@
         </div>
       </div>
 
-      <div class="inventory-panel" aria-label="Inventário (scroll)">
-        <div class="inv-list" id="invList">
-          <div class="inv-slot" id="inv1"><input class="inv-input" data-index="0" value="Faca pequena" /></div>
-          <div class="inv-slot" id="inv2"><input class="inv-input" data-index="1" value="Corda" /></div>
-          <div class="inv-slot" id="inv3"><input class="inv-input" data-index="2" value="Pinga" /></div>
-          <div class="inv-slot" id="inv4"><input class="inv-input" data-index="3" value="Pergaminho amassado" /></div>
-        </div>
+      <div class="inventory-panel"> 
+        <div class="inv-column" aria-label="Inventário (scroll)">
+          <div class="inv-list" id="invList">
+            <div class="inv-slot" id="inv1"><input class="inv-input" data-index="0" value="Faca pequena" /></div>
+            <div class="inv-slot" id="inv2"><input class="inv-input" data-index="1" value="Corda" /></div>
+            <div class="inv-slot" id="inv3"><input class="inv-input" data-index="2" value="Pinga" /></div>
+            <div class="inv-slot" id="inv4"><input class="inv-input" data-index="3" value="Pergaminho amassado" /></div>
+          </div>
+        <button class="inv-add" id="addItem">+</button>
+      </div>
 
         <div style="flex:0 0 180px; display:flex; align-items:flex-end; justify-content:flex-end;">
           <div class="special-box" aria-label="Item especial">

@@ -4,6 +4,8 @@
 
 // Função que salva todos os inputs da página
 
+let carregandoFicha = true;
+
 function keyForElement(el, index) {
   // Prioridade: id -> name -> data-group+data-i -> data-save -> fallback index
   if (el.id) return el.id;
@@ -14,6 +16,8 @@ function keyForElement(el, index) {
 }
 
 function salvarFicha() {
+  if (carregandoFicha) return;
+
   const dados = {};
   document.querySelectorAll("input, textarea, select").forEach((el, index) => {
     const chave = keyForElement(el, index);
@@ -25,13 +29,23 @@ function salvarFicha() {
 
   dados["buffs"] = buffs;
 
+  const inventario = [...document.querySelectorAll(".inv-input")]
+  .map(input => input.value);
+
+  dados["inventario"] = inventario;
+
   localStorage.setItem("fichaRPG", JSON.stringify(dados));
 }
 
 
 function carregarFicha() {
   const dadosSalvos = localStorage.getItem("fichaRPG");
-  if (!dadosSalvos) return;
+
+  if (!dadosSalvos) {
+    carregandoFicha = false; // 🔓 libera autosave mesmo sem ficha
+    return;
+  }
+
   const dados = JSON.parse(dadosSalvos);
 
   document.querySelectorAll("input, textarea, select").forEach((el, index) => {
@@ -53,14 +67,31 @@ function carregarFicha() {
   if (dados.buffs !== undefined) {
     restaurarBuffs(dados.buffs);
   }
+
+  if (Array.isArray(dados.inventario)) {
+    invList.innerHTML = "";
+
+    dados.inventario.forEach((valor, index) => {
+      const slot = document.createElement("div");
+      slot.className = "inv-slot";
+      slot.id = `inv${index + 1}`;
+
+      const input = document.createElement("input");
+      input.className = "inv-input";
+      input.dataset.index = index;
+      input.dataset.save = `inv_${index}`;
+      input.value = valor;
+
+      slot.appendChild(input);
+      invList.appendChild(slot);
+    });
+  }
+  carregandoFicha = false;
 }
 
 // ativa autossalvamento global (captura selects dinamicos também)
 document.addEventListener("input", salvarFicha);
 document.addEventListener("change", salvarFicha);
-
-// Salva sempre que mudar
-document.addEventListener("input", salvarFicha);
 
 function limparFicha() {
     if (confirm("Tem certeza que deseja apagar todos os dados da ficha?")) {
@@ -237,6 +268,28 @@ function atualizarImagemPV() {
         img.src = "../../Images/Sprites/SpritesPlayer1/img3.png";
     }
 }
+
+const invList = document.getElementById("invList");
+const addBtn = document.getElementById("addItem");
+
+addBtn.addEventListener("click", () => {
+  const index = invList.children.length;
+
+  const slot = document.createElement("div");
+  slot.className = "inv-slot";
+  slot.id = `inv${index + 1}`;
+
+  const input = document.createElement("input");
+  input.className = "inv-input";
+  input.dataset.index = index;
+  input.dataset.save = `inv_${index}`;
+  input.placeholder = "Novo item...";
+
+  slot.appendChild(input);
+  invList.appendChild(slot);
+
+  salvarFicha();
+});
 
 // Quando o PV mudar — ele atualiza.
 document.getElementById("pv").addEventListener("input", atualizarImagemPV)

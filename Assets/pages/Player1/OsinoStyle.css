@@ -128,6 +128,28 @@
   .inv-slot{padding:10px; border-bottom:1px dashed rgba(255,255,255,0.03); display:flex; gap:8px; align-items:center;}
   .inv-slot input{width:100%; background:transparent;border:none; font-family:var(--mono); color:#ffffff;}
 
+  .inv-column{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+  .inv-add {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px;
+  font-size: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px dashed rgba(255,255,255,0.3);
+  color: #eee;
+  cursor: pointer;
+}
+
+.inv-add:hover {
+  background: rgba(255,255,255,0.1);
+}
+
   /* Caixa ornamentada de item especial no canto direito-inferior do inventário */
   .special-box{width:180px; min-width:160px; height:128px; border:1px solid rgba(255,255,255,0.04); border-radius:8px; padding:8px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06)); display:flex; flex-direction:column; justify-content:space-between; box-shadow: inset 0 0 12px rgba(0,0,0,0.5);}
   .special-box .img{height:76px; border:1px solid rgba(255,255,255,0.03); border-radius:4px; background:#0b0b0b; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px;}
