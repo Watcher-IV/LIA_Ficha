@@ -242,6 +242,7 @@ function updateHP(){
   hpEl.textContent = hp;
   // garantir que PV não fique acima do HP
   if(toInt(pvEl.value) > hp) pvEl.value = hp;
+  document.getElementById("pvMax").textContent = hp;
   updatePVBar();
 }
 
@@ -261,7 +262,7 @@ function atualizarImagemPV() {
         img.src = "../../Images/Sprites/SpritesPlayer1/img1.png";
     }
     else if (porcentagem > 1) {
-        img.src = "../../Images/Sprites/SpritesPlayer1/img2.jpg";
+        img.src = "../../Images/Sprites/SpritesPlayer1/img2.png";
     }
     else {
         img.src = "../../Images/Sprites/SpritesPlayer1/img3.png";
@@ -297,6 +298,7 @@ function updatePT(){
   let ess = clamp(toInt(essEl.value),0,6);
   const pt = ptTable[ess];
   ptEl.textContent = pt;
+  document.getElementById("psMax").textContent = 50;
   // ajustar rótulo e preenchimento da tensão
   updateTension();
 }
@@ -337,6 +339,7 @@ function updateTension(){
   tLabel.textContent = t + ' / ' + pt;
   // destaque sutil perto do limite
   tFill.style.boxShadow = t >= pt * 0.75 ? '0 0 8px rgba(255,60,60,0.45)' : '';
+  document.getElementById("tMax").textContent = pt;
 }
 
 /* eventos */
@@ -442,7 +445,7 @@ cursesList.addEventListener("input", () => {
 });
 
 /* Aspectos: preencher os selects e ligar soma / reset / fix */
-const LIMITE_PONTOS = 3;
+const LIMITE_PONTOS = 5;
 
 function makeOptions(sel){
     sel.innerHTML = '';
@@ -505,7 +508,6 @@ grupos.forEach(group => {
 
     limitarGrupo(group);
 });
-
 
 // Agora que selects já têm opções, podemos carregar os valores
 carregarFicha();
