@@ -10,7 +10,7 @@
   }
 
   body {
-    background: url("../../Images/Sprites/SpritesPlayer1/Osino_fundo.png") no-repeat center center fixed !important;
+    background: url("../../Images/Sprites/SpritesPlayer2/raposa_fundo.png") no-repeat center center fixed !important;
     background-size: cover;
     font-family: 'Cinzel', serif; /* ou a fonte que você está usando */}
   .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:0; box-sizing:border-box;}

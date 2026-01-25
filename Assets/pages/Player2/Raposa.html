@@ -7,7 +7,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="../Player1/OsinoStyle.css">
+<link rel="stylesheet" href="../Player2/RaposaStyle.css">
 </head>
 <body>
 <button class="btn-clean" onclick="limparFicha()">Limpar Ficha</button>
@@ -17,7 +17,7 @@
     <aside class="panel left" aria-label="Coluna esquerda">
       <div class="TopArea name-row">
         <input id="name" class="name-field" placeholder="Nome"
-        value="Osino" aria-label="Nome do personagem"
+        value="Raposa" aria-label="Nome do personagem"
         />
         <input id="Nível" class="Level-box" placeholder="Nível" 
         aria-label="Nível do personagem" value="1"
@@ -25,8 +25,8 @@
       </div>
 
       <div class="subinfo" style="margin-top:8px;">
-        <input id="idade" class="small-input" placeholder="Idade" aria-label="Idade" value="11"/>
-        <input id="corOlhos" class="small-input" placeholder="Cor dos olhos" value="Caramelo" aria-label="Cor dos olhos" />
+        <input id="idade" class="small-input" placeholder="Idade" aria-label="Idade" value="10"/>
+        <input id="corOlhos" class="small-input" placeholder="Cor dos olhos" value="Castanho Claro Ambar" aria-label="Cor dos olhos" />
       </div>
 
       <!-- Vitals (PV / PS / TENSÃO) -->
@@ -85,11 +85,11 @@
       <!-- Attributes larger -->
       <div class="attrs">
         <h3 class="muted" style="margin-bottom:10px; font-family:var(--title); font-size: 15px;">ATRIBUTOS</h3>
-        <div class="attr"><div class="name">Potência</div><input id="potencia" type="number" value="3" /></div>
-        <div class="attr"><div class="name">Astúcia</div><input id="astucia" type="number" value="0" /></div>
+        <div class="attr"><div class="name">Potência</div><input id="potencia" type="number" value="0" /></div>
+        <div class="attr"><div class="name">Astúcia</div><input id="astucia" type="number" value="3" /></div>
         <div class="attr"><div class="name">Essência</div><input id="essencia" type="number" value="2" min="0" max="6" /></div>
-        <div class="attr"><div class="name">Mente</div><input id="mente" type="number" value="0" /></div>
-        <div class="attr"><div class="name">Ímpeto</div><input id="impeto" type="number" value="2" min="0" /></div>
+        <div class="attr"><div class="name">Mente</div><input id="mente" type="number" value="2" /></div>
+        <div class="attr"><div class="name">Ímpeto</div><input id="impeto" type="number" value="0" min="0" /></div>
 
         <div class="calc-info">
           HP inicial: <strong id="hpCalc">13</strong> &nbsp; (10 + IMP * 3) <br>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="portrait">
-          <img id="statusPV" src="../../Images/Sprites/SpritesPlayer1/img1.png" alt="Retrato do personagem">
+          <img id="statusPV" src="../../Images/Sprites/SpritesPlayer2/img1.png" alt="Retrato do personagem">
         </div>
       </div>
 
@@ -126,7 +126,7 @@
         <div style="flex:0 0 180px; display:flex; align-items:flex-end; justify-content:flex-end;">
           <div class="special-box" aria-label="Item especial">
             <div class="img">Ilustração do Item</div>
-            <input id="specialItem" placeholder="Item Especial" value="Bolsa de Viajem" aria-label="Nome do item especial" />
+            <input id="specialItem" placeholder="Item Especial" value="Touca de Raposa" aria-label="Nome do item especial" />
           </div>
         </div>
       </div>
@@ -256,6 +256,6 @@
  
   <div style="position:absolute; left:0; right:0; bottom:8px; text-align:center; font-size:12px; color:rgba(255,255,255,0.04);">Work in Progress </div>
 </main>
-  <script src="../OsinoScript.js"></script>
+  <script src="../RaposaScript.js"></script>
 </body>
 </html>

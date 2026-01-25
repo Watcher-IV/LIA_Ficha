@@ -6,14 +6,14 @@
     // Define a senha de cada ficha
     const senhas = {
         ficha1: "Carrasco",
-        ficha2: "Risperidona",
+        ficha2: "Bunker",
         ficha3: "0000",
     };
 
     // Define o destino de cada ficha
     const paginas = {
         ficha1: "Player1/Osino1.html",
-        ficha2: "ficha_personagem_2.html",
+        ficha2: "Player2/Raposa.html",
         ficha3: "ficha_personagem_3.html",
     };
 
@@ -42,9 +42,9 @@
 
     if (ficha === 'ficha2') {
         backgroundFicha.style.backgroundImage =
-            "url('../Images/Imagem provisória.png')";
+            "url('../Images/Tileset/OsinoBackground.png')";
 
-        imagemFicha.src = "../Images/Sprites/SpritesPlayer1/img1.png";
+        imagemFicha.src = "../Images/Tileset/SilhuetaRaposa.png";
         detalhesExtras.style.backgroundImage =
             "url('detalhe2.gif')";
     }
