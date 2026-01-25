@@ -233,24 +233,8 @@ const ESS = document.getElementById('essencia')
 const MEN = document.getElementById('mente')
 const IMP = document.getElementById('impeto')
 
-const ASPECTO_ATRIBUTO = {
-  acao: 'astucia',
-  razao: 'mente',
-  instinto: 'essencia'
-};
-
 function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
 function toInt(v){ const n = parseInt(v,10); return isNaN(n)?0:n; }
-
-function getLimiteAspecto(group) {
-  const atributoId = ASPECTO_ATRIBUTO[group];
-  if (!atributoId) return 3;
-
-  const atributoEl = document.getElementById(atributoId);
-  const valorAtributo = toInt(atributoEl?.value);
-
-  return 3 + valorAtributo;
-}
 
 function updateHP(){
   const imp = toInt(impEl.value);
@@ -258,7 +242,6 @@ function updateHP(){
   hpEl.textContent = hp;
   // garantir que PV não fique acima do HP
   if(toInt(pvEl.value) > hp) pvEl.value = hp;
-  document.getElementById("pvMax").textContent = hp;
   updatePVBar();
 }
 
@@ -278,7 +261,7 @@ function atualizarImagemPV() {
         img.src = "../../Images/Sprites/SpritesPlayer2/img1.png";
     }
     else if (porcentagem > 1) {
-        img.src = "../../Images/Sprites/SpritesPlayer2/img2.png";
+        img.src = "../../Images/Sprites/SpritesPlayer2/img2.jpg";
     }
     else {
         img.src = "../../Images/Sprites/SpritesPlayer2/img3.png";
@@ -314,7 +297,6 @@ function updatePT(){
   let ess = clamp(toInt(essEl.value),0,6);
   const pt = ptTable[ess];
   ptEl.textContent = pt;
-  document.getElementById("psMax").textContent = 50;
   // ajustar rótulo e preenchimento da tensão
   updateTension();
 }
@@ -355,7 +337,6 @@ function updateTension(){
   tLabel.textContent = t + ' / ' + pt;
   // destaque sutil perto do limite
   tFill.style.boxShadow = t >= pt * 0.75 ? '0 0 8px rgba(255,60,60,0.45)' : '';
-  document.getElementById("tMax").textContent = pt;
 }
 
 /* eventos */
@@ -461,6 +442,7 @@ cursesList.addEventListener("input", () => {
 });
 
 /* Aspectos: preencher os selects e ligar soma / reset / fix */
+const LIMITE_PONTOS = 5;
 
 function makeOptions(sel){
     sel.innerHTML = '';
@@ -479,7 +461,7 @@ function limitarGrupo(group) {
     const negativos = [...selects].filter(s => Number(s.value) === -1).length;
 
     // Novo limite dinâmico
-    const limiteAtual = getLimiteAspecto(group) + negativos;
+    const limiteAtual = LIMITE_PONTOS + negativos;
 
     let soma = [...selects].reduce((acc, s) => acc + Number(s.value), 0);
 
@@ -524,33 +506,9 @@ grupos.forEach(group => {
     limitarGrupo(group);
 });
 
-function initAspectPools() {
-  document.querySelectorAll(".aspect-block").forEach(block => {
-    const spanAtual = block.querySelector(".current");
-    const selects = block.querySelectorAll("select");
-
-  function atualizarPool() {
-    const soma = [...selects].reduce((acc, s) => acc + Number(s.value), 0);
-    const negativos = [...selects].filter(s => Number(s.value) === -1).length;
-
-    const limiteAtual = getLimiteAspecto(
-      selects[0]?.dataset.group
-    ) + negativos;
-
-    spanAtual.textContent = limiteAtual - soma;
-  }
-
-    selects.forEach(s => {
-      s.addEventListener("change", atualizarPool);
-    });
-
-    atualizarPool(); // inicial
-  });
-}
 
 // Agora que selects já têm opções, podemos carregar os valores
 carregarFicha();
-initAspectPools();
 
 // Recalcular limites visuais após carregar valores salvos
 grupos.forEach(group => limitarGrupo(group));
@@ -560,4 +518,3 @@ updateSumBadges();
 
 /* pequenos detalhes: quando HP mudar, ajustar PV se necessário */
 hpEl.addEventListener && hpEl.addEventListener('DOMSubtreeModified', ()=> updatePVBar());
-

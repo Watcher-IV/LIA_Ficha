@@ -302,6 +302,21 @@
   .aspect-row {display: flex; justify-content: space-between; align-items: center; margin: 4px 0;}
   .aspect-row div {color: #ccc; font-size: 14px;}
 
+  .aspect-pool-input {
+    width: 28px;
+    background: transparent;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    font-family: inherit;
+    color: var(--text);
+  }
+
+  .aspect-pool-input:focus {
+    outline: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
   .sum-badge{padding:4px 8px; border-radius:4px; font-family:var(--mono); background:rgba(255,255,255,0.01); color:var(--accent);}
 
   .pool{font-family: var(--mono); font-size: 14px; color: var(--muted);}
