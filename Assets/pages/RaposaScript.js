@@ -261,7 +261,7 @@ function atualizarImagemPV() {
         img.src = "../../Images/Sprites/SpritesPlayer2/img1.png";
     }
     else if (porcentagem > 1) {
-        img.src = "../../Images/Sprites/SpritesPlayer2/img2.jpg";
+        img.src = "../../Images/Sprites/SpritesPlayer2/img2.png";
     }
     else {
         img.src = "../../Images/Sprites/SpritesPlayer2/img3.png";
