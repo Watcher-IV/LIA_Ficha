@@ -12,7 +12,7 @@
 
     // Define o destino de cada ficha
     const paginas = {
-        ficha1: "Player1/Osino1.html",
+        ficha1: "Player1/Osino.html",
         ficha2: "Player2/Raposa.html",
         ficha3: "ficha_personagem_3.html",
     };

@@ -1,3 +1,5 @@
+// Novo
+
 // ===============================
 // FICHA RPG - VERSÃO ORIENTADA A OBJETOS
 // ===============================
@@ -24,6 +26,7 @@ class FichaRPG {
     this.buffs = new BuffsManager(this);
     this.abas = new AbasManager(this);
     this.maldições = new MaldicoesManager(this);
+    this.inventario = new InventarioManager(this);
     this.humanidade = new HumanidadeManager(this);
     this.ui = new UIManager(this);
 
@@ -418,40 +421,53 @@ class AspectosManager {
 class HumanidadeManager {
   constructor(ficha) {
     this.ficha = ficha;
-    this.container = document.getElementById('humanidadeSymbols');
     this.input = document.getElementById('humanidade');
-    this.overlay = document.getElementById('humanidadeOverlay');
+    this.imgDisplay = document.getElementById('humanidadeImg');
+    this.btnDown = document.getElementById('humanidadeDown');
+    this.btnUp = document.getElementById('humanidadeUp');
     this.maxHumanidade = 10;
 
-    this.inicializar();
-    this.configurarEventos();
-  }
+    // Array com os caminhos das 10 imagens diferentes (0 = vazio, 10 = cheio)
+    this.imagensSimbolo = [
+      '../../Images/Humanidade/simbolo0.png',  // 0 - vazio
+      '../../Images/Humanidade/simbolo1.png',
+      '../../Images/Humanidade/simbolo2.png',
+      '../../Images/Humanidade/simbolo3.png',
+      '../../Images/Humanidade/simbolo4.png',
+      '../../Images/Humanidade/simbolo5.png',
+      '../../Images/Humanidade/simbolo6.png',
+      '../../Images/Humanidade/simbolo7.png',
+      '../../Images/Humanidade/simbolo8.png',
+      '../../Images/Humanidade/simbolo9.png',
+      '../../Images/Humanidade/simbolo10.png'  // 10 - cheio
+    ];
 
-  inicializar() {
-    // Cria os 10 símbolos
-    this.container.innerHTML = '';
-    for (let i = 0; i < this.maxHumanidade; i++) {
-      const symbol = document.createElement('div');
-      symbol.className = 'humanidade-symbol';
-      symbol.dataset.index = i;
-      this.container.appendChild(symbol);
-    }
-    
+    this.configurarEventos();
     this.atualizar();
   }
 
   configurarEventos() {
-    // Clique nos símbolos altera o valor
-    this.container.addEventListener('click', (e) => {
-      if (e.target.classList.contains('humanidade-symbol')) {
-        const index = parseInt(e.target.dataset.index);
-        this.input.value = index + 1;
+    // Seta esquerda: diminui humanidade
+    this.btnDown?.addEventListener('click', () => {
+      let valor = parseInt(this.input.value) || 0;
+      if (valor > 0) {
+        this.input.value = valor - 1;
         this.atualizar();
         this.ficha.storage.salvar();
       }
     });
 
-    // Se alguém mudar o input oculto
+    // Seta direita: aumenta humanidade
+    this.btnUp?.addEventListener('click', () => {
+      let valor = parseInt(this.input.value) || 0;
+      if (valor < this.maxHumanidade) {
+        this.input.value = valor + 1;
+        this.atualizar();
+        this.ficha.storage.salvar();
+      }
+    });
+
+    // Se alguém mudar o input oculto diretamente
     this.input?.addEventListener('input', () => this.atualizar());
   }
 
@@ -459,17 +475,19 @@ class HumanidadeManager {
     const valor = this.clamp(parseInt(this.input.value) || 0, 0, this.maxHumanidade);
     this.input.value = valor;
 
-    // Atualiza símbolos
-    const symbols = this.container.querySelectorAll('.humanidade-symbol');
-    symbols.forEach((symbol, index) => {
-      if (index < valor) {
-        symbol.classList.add('filled');
-        symbol.classList.remove('empty');
-      } else {
-        symbol.classList.remove('filled');
-        symbol.classList.add('empty');
-      }
-    });
+    // Atualiza a imagem mostrada
+    if (this.imgDisplay) {
+      this.imgDisplay.src = this.imagensSimbolo[valor];
+      this.imgDisplay.alt = `Humanidade: ${valor}`;
+    }
+
+    // Desabilita botões nos limites
+    if (this.btnDown) {
+      this.btnDown.disabled = (valor <= 0);
+    }
+    if (this.btnUp) {
+      this.btnUp.disabled = (valor >= this.maxHumanidade);
+    }
 
     // Aplica efeitos visuais de degradação
     this.aplicarEfeitosDegradacao(valor);
@@ -635,38 +653,36 @@ class AbasManager {
   }
 
   configurarEventos() {
-    document.addEventListener("DOMContentLoaded", () => {
-      // Abas do centro (Geral e Habilidades)
-      const buttonsCentro = document.querySelectorAll(".tabs-center .tab");
-      const contentsCentro = document.querySelectorAll(".panel.center .tab-content");
+    // Abas do centro (Geral, Inventário e Habilidades)
+    const buttonsCentro = document.querySelectorAll(".tabs-center .tab");
+    const contentsCentro = document.querySelectorAll(".panel.center .tab-content");
 
-      buttonsCentro.forEach(btn => {
-        btn.addEventListener("click", () => {
-          // Remove active de todas as abas do centro
-          buttonsCentro.forEach(b => b.classList.remove("active"));
-          contentsCentro.forEach(c => c.classList.remove("active"));
+    buttonsCentro.forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Remove active de todas as abas do centro
+        buttonsCentro.forEach(b => b.classList.remove("active"));
+        contentsCentro.forEach(c => c.classList.remove("active"));
 
-          // Ativa a aba clicada
-          btn.classList.add("active");
-          const id = btn.dataset.tab;
-          const conteudo = document.getElementById(id);
-          if (conteudo) {
-            conteudo.classList.add("active");
-          }
-        });
+        // Ativa a aba clicada
+        btn.classList.add("active");
+        const id = btn.dataset.tab;
+        const conteudo = document.getElementById(id);
+        if (conteudo) {
+          conteudo.classList.add("active");
+        }
       });
+    });
 
-      // Aba trancada (direita)
-      const buttonsDireita = document.querySelectorAll(".panel.right .tabs .tab");
-      
-      buttonsDireita.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          if (btn.classList.contains("Lock")) {
-            e.preventDefault();
-            this.pedirSenha();
-            return;
-          }
-        });
+    // Aba trancada (direita)
+    const buttonsDireita = document.querySelectorAll(".panel.right .tabs .tab");
+    
+    buttonsDireita.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        if (btn.classList.contains("Lock")) {
+          e.preventDefault();
+          this.pedirSenha();
+          return;
+        }
       });
     });
   }
@@ -777,11 +793,11 @@ class UIManager {
     const habBox = document.getElementById("habText");
     if (!habBox) return;
 
-    // Carregar do localStorage
-    document.addEventListener("DOMContentLoaded", () => {
-      const saved = localStorage.getItem("habText");
-      if (saved) habBox.innerHTML = saved;
-    });
+    // Carregar do localStorage imediatamente
+    const saved = localStorage.getItem("habText");
+    if (saved) {
+      habBox.innerHTML = saved;
+    }
 
     // Salvar ao digitar
     habBox.addEventListener("input", () => {
